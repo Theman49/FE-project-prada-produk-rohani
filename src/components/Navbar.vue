@@ -1,11 +1,12 @@
 <script>
-
+// import publicPath from '../../vue.config.js'
+console.log(process.env.NODE_ENV)
 
 let id = 0
 export default {
     data() {
         return {
-            currentPath: "http://localhost:5173/",
+            currentPath: process.env.NODE_ENV === "production" ? "/FE-project-prada-produk-rohani/" : "/",
             navbarList: [
                 { id: id++, text: "home"},
                 { id: id++, text: "hampers", submenus: [

@@ -9,32 +9,32 @@ const routes = [
     {
         path: "/",
         component: Home,
-        name: "Home | Pranada Produk Rohani"
+        name: "Home | Prada Produk Rohani"
     },
     {
         path: "/home",
         component: Home,
-        name: "Home | Pranada Produk Rohani"
+        name: "Home | Prada Produk Rohani"
     },
     {
         path: "/product/:id",
         component: Product,
-        name: "Produk | Pranada Produk Rohani"
+        name: "Produk | Prada Produk Rohani"
     },
     {
         path: '/cart',
         component: Cart,
-        name: "Keranjang | Pranada Produk Rohani"
+        name: "Keranjang | Prada Produk Rohani"
     },
     {
         path: '/checkout',
         component: Checkout,
-        name: "Checkout | Pranada Produk Rohani"
+        name: "Checkout | Prada Produk Rohani"
     },
     {
         path: "/:pathMatch(.*)*",
         component: NotFound,
-        name: "Pranada Produk Rohani"
+        name: "Prada Produk Rohani"
     }
 ]
 
