@@ -8,6 +8,7 @@ import axios from 'axios';
 export default{
     data(){
         return {
+            baseUrl: import.meta.env.VITE_APP_STAGE == 'production' ? import.meta.env.VITE_APP_BASE_URL_PROD : import.meta.env.VITE_APP_BASE_URL,
             product: undefined,
             primaryImage: null,
             counter: 1
@@ -39,6 +40,7 @@ export default{
                 'itemTitle': this.product.title
             }
             console.log(item)
+            document.location.href = this.baseUrl + 'cart'
         }
     },
     async mounted(){

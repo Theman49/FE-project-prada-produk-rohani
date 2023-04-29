@@ -54,7 +54,7 @@ export default {
     <MainLayout v-if="carts !== undefined">
         <h1 class="text-center mb-8 text-3xl">Keranjang</h1>
 
-        <div class="container" v-if="carts.length != 0">
+        <div class="sm:container" v-if="carts.length != 0">
             <table :style="{
                 'width': '100%',
                 'border-collapse': 'collapse'
@@ -70,7 +70,8 @@ export default {
                     <tr v-for="cart in carts">
                         <td :style="{
                             'display': 'flex',
-                            'align-items': 'center'
+                            'align-items': 'center',
+                            'padding': '20px 0'
                         }">
                             <v-icon name="co-trash" fill="red" scale="2" :style="{
                                 'cursor': 'pointer'
@@ -81,10 +82,9 @@ export default {
                                 'align-items': 'center'
                             }">
                                 <div :style="{
-                                    'width': '100px',
-                                    'height': '125px',
-                                    'padding': '10px'
-                                }">
+                                    'border-radius': '5px',
+                                    'overflow': 'hidden'
+                                }" class="w-[75px] h-[100px] sm:w-[100px] sm:h-[125px]">
                                     <img :src="cart.images[0]" :style="{
                                         'width': '100%',
                                         'height': '100%',
@@ -128,11 +128,11 @@ export default {
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="1"></td>
+                        <td v-if="$matches.sm.min" colspan="1"></td>
                         <td :style="{
                             'font-weight': 'bold'
-                        }">Total Harga</td>
-                        <td :style="{
+                        }" class="text-center">Total Harga</td>
+                        <td colspan="2" :style="{
                             'font-weight': 'bold',
                             'font-size': '20px',
                             'padding': '10px 0'

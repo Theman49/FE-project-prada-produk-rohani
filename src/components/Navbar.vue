@@ -1,11 +1,12 @@
 <script>
 // import publicPath from '../../vue.config.js'
 
-
 let id = 0
 export default {
     data() {
         return {
+            baseUrl: import.meta.env.VITE_APP_STAGE == 'production' ? import.meta.env.VITE_APP_BASE_URL_PROD :
+            import.meta.env.VITE_APP_BASE_URL,
             navbarList: [
                 { id: id++, text: "home"},
                 { id: id++, text: "hampers", submenus: [
@@ -69,13 +70,13 @@ export default {
             @mouseenter="showSubmenu(nav.id)" 
             @mouseleave="closeSubmenu(nav.id)"
         >
-            <a v-if="nav.text !== 'home'" :href=" '/catalog/' + nav.text"
+            <a v-if="nav.text !== 'home'" :href=" baseUrl + 'catalog/' + nav.text"
                 >{{ nav.text }}</a>
-            <a v-else :href="'/' + nav.text"
+            <a v-else :href="baseUrl + nav.text"
             >{{ nav.text }}</a>
             <ul class="submenus" v-if="nav.submenus" :id="'submenu-'+nav.id">
                 <li v-for="submenu in nav.submenus">
-                    <a :href="'/catalog/' + nav.text + '/' + submenu.text">{{ submenu.text }}</a>
+                    <a :href="baseUrl + 'catalog/' + nav.text + '/' + submenu.text">{{ submenu.text }}</a>
                 </li>
             </ul>
         </li>
@@ -96,13 +97,13 @@ export default {
                 @mouseenter="showSubmenu(nav.id)" 
                 @mouseleave="closeSubmenu(nav.id)"
             >
-                <a v-if="nav.text !== 'home'" :href="'/catalog/' + nav.text"
+                <a v-if="nav.text !== 'home'" :href="baseUrl + 'catalog/' + nav.text"
                     >{{ nav.text }}</a>
-                <a v-else :href="'/' + nav.text"
+                <a v-else :href="baseUrl + nav.text"
                 >{{ nav.text }}</a>
                 <ul class="submenus" v-if="nav.submenus" :id="'submenu-'+nav.id">
                     <li v-for="submenu in nav.submenus">
-                        <a :href="'/catalog/' + nav.text + '/' + submenu.text">{{ submenu.text }}</a>
+                        <a :href="baseUrl + 'catalog/' + nav.text + '/' + submenu.text">{{ submenu.text }}</a>
                     </li>
                 </ul>
             </li>
