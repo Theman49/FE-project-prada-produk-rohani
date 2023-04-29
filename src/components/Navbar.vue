@@ -91,7 +91,7 @@ export default {
         </div>
         <ul v-if="showInMobile" class="bg-[#999]">
             <li 
-                :class="(this.$route.fullPath == '/' + nav.text) ? 'active' : ''" 
+                :class="(this.$route.fullPath == baseUrl + nav.text) ? 'active' : ''" 
                 :style="{ 'position': 'relative'}" 
                 v-for="nav in navbarList" :key="nav.id"  
                 @mouseenter="showSubmenu(nav.id)" 
