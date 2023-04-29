@@ -64,7 +64,7 @@ export default {
 <template>
     <ul v-if="$matches.sm.min" class="flex justify-between z-1000 bg-[#999]">
         <li 
-            :class="(this.$route.fullPath == '/' + nav.text) ? 'active' : ''" 
+            :class="(this.$route.fullPath == baseUrl + nav.text) ? 'active' : ''" 
             class="relative" 
             v-for="nav in navbarList" :key="nav.id"  
             @mouseenter="showSubmenu(nav.id)" 

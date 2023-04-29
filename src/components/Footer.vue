@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <div class="container flex flex-col gap-5 sm:flex sm:justify-between sm:flex-row sm:gap-4 pb-4">
+    <div class="px-[1em] sm:container flex flex-col gap-5 sm:flex sm:justify-between sm:flex-row sm:gap-4 pb-4">
         <div class="footer-item">
             <div>
                 <p class="heading">Tentang Kami</p>

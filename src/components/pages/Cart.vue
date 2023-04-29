@@ -9,6 +9,7 @@ export default {
     data() {
         return {
             carts: [],
+            baseUrl: import.meta.env.VITE_APP_STAGE == 'production' ? import.meta.env.VITE_APP_BASE_URL_PROD : import.meta.env.VITE_APP_BASE_URL,
             sumPrices: 0
         }
     },
@@ -39,7 +40,7 @@ export default {
             this.sumPrices = prices.reduce((total, num) => total + num)
         },
         goToProduct(id){
-            document.location.href = `http://localhost:5173/product/${id}`
+            document.location.href = this.baseUrl + 'product/' + id
         },
     },
     async mounted() {
@@ -54,7 +55,7 @@ export default {
     <MainLayout v-if="carts !== undefined">
         <h1 class="text-center mb-8 text-3xl">Keranjang</h1>
 
-        <div class="sm:container" v-if="carts.length != 0">
+        <div class="px-[1em] sm:container" v-if="carts.length != 0">
             <table :style="{
                 'width': '100%',
                 'border-collapse': 'collapse'
@@ -84,7 +85,7 @@ export default {
                                 <div :style="{
                                     'border-radius': '5px',
                                     'overflow': 'hidden'
-                                }" class="w-[75px] h-[100px] sm:w-[100px] sm:h-[125px]">
+                                }" class="w-[50px] h-[75px] sm:w-[100px] sm:h-[125px]">
                                     <img :src="cart.images[0]" :style="{
                                         'width': '100%',
                                         'height': '100%',
@@ -103,22 +104,13 @@ export default {
                                 'display': 'flex',
                                 'justify-content': 'center'
                             }">
-                                <button :style="{
-                                    'height': '100%',
-                                    'padding': '4px 6px',
-                                    'cursor': 'pointer'
-                                }" @click="decrement(cart.id)">-</button>
+                                <button class="actionButton" @click="decrement(cart.id)">-</button>
 
                                 <input v-model="cart.count" :style="{
-                                    'width': '50px',
                                     'text-align': 'center'
-                                }" readonly/>
+                                }" readonly class="w-[25px] sm:w-[50px]"/>
 
-                                <button :style="{
-                                    'height': '100%',
-                                    'padding': '4px 6px',
-                                    'cursor': 'pointer'
-                                }" @click="increment(cart.id)">+</button>
+                                <button class="actionButton" @click="increment(cart.id)">+</button>
                             </div>
                         </td>
                         <td>
@@ -194,5 +186,10 @@ export default {
     }
     table input:focus {
         outline: none;
+    }
+    .actionButton {
+        height: 100%;
+        padding: 4px 6px;
+        cursor: pointer;
     }
 </style>

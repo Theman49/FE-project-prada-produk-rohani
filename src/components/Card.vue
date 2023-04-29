@@ -55,10 +55,10 @@ export default {
 
             <div>
                 <div>
-                    <p>{{ genTitle }}</p>
+                    <p class="text-sm sm:text-base">{{ genTitle }}</p>
                 </div>
                 <div>
-                    <p>Rp. {{ price }},-</p>
+                    <p class="text-sm sm:text-base">Rp. {{ price }},-</p>
                 </div>
             </div>
         </div>
@@ -77,6 +77,11 @@ export default {
         padding: 10px;
         box-shadow: 0px 0px 4px 2px rgba(0,0,0,.3);
         cursor: pointer;
+    }
+    @media screen and (max-width: 578px){
+        .card {
+            width: 150px;
+        }
     }
 
 </style>
