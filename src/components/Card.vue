@@ -5,7 +5,9 @@ const maxChar = 15
 export default {
     data(){
         return {
-            genTitle: null
+            genTitle: null,
+            baseUrl: import.meta.env.VITE_APP_STAGE == 'production' ? import.meta.env.VITE_APP_BASE_URL_PROD :
+            import.meta.env.VITE_APP_BASE_URL
         }
     },
     props: {
@@ -37,7 +39,7 @@ export default {
 </script>
 
 <template>
-    <router-link :to="'/product/' + id">
+    <router-link :to="baseUrl +'product/' + id">
         <div class="card" @click="seeProduct(id)">
             <div :style="{
                 'width': '100%',

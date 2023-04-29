@@ -5,34 +5,36 @@ import Cart from "../components/pages/Cart.vue"
 import Checkout from "../components/pages/Checkout.vue"
 import NotFound from "../components/utilities/NotFound.vue"
 
+const baseUrl = import.meta.env.VITE_APP_STAGE == 'production' ? import.meta.env.VITE_APP_BASE_URL_PROD : import.meta.env.VITE_APP_BASE_URL
+
 const routes = [
     {
-        path: "/",
+        path: baseUrl,
         component: Home,
         name: "Home | Prada Produk Rohani"
     },
     {
-        path: "/home",
+        path: baseUrl + "home",
         component: Home,
         name: "Home | Prada Produk Rohani"
     },
     {
-        path: "/product/:id",
+        path:  baseUrl + "product/:id",
         component: Product,
         name: "Produk | Prada Produk Rohani"
     },
     {
-        path: '/cart',
+        path: baseUrl + 'cart',
         component: Cart,
         name: "Keranjang | Prada Produk Rohani"
     },
     {
-        path: '/checkout',
+        path: baseUrl + 'checkout',
         component: Checkout,
         name: "Checkout | Prada Produk Rohani"
     },
     {
-        path: "/:pathMatch(.*)*",
+        path: baseUrl + ":pathMatch(.*)*",
         component: NotFound,
         name: "Prada Produk Rohani"
     }
