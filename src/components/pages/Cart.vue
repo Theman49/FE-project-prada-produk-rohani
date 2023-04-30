@@ -3,11 +3,14 @@ import MainLayout from  "../../layouts/MainLayout.vue"
 import Loading from "../utilities/Loading.vue"
 import axios from 'axios'
 
+import { useCartStore } from "../../stores/Cart"
+
 const url = 'https://dummyjson.com/products?limit=3&skip=3&select=id,title,price,images'
 
 export default {
     data() {
         return {
+            cartStore: useCartStore(),
             carts: [],
             baseUrl: import.meta.env.VITE_APP_STAGE == 'production' ? import.meta.env.VITE_APP_BASE_URL_PROD : import.meta.env.VITE_APP_BASE_URL,
             sumPrices: 0
@@ -19,35 +22,20 @@ export default {
     },
     methods: {
         removeFromCart(id){
-            const filtered = this.carts.filter((cart) => cart.id != id)
-            this.carts = filtered
-            this.countSumPrices(filtered)
+            this.cartStore.removeCart(id)
+            // this.countSumPrices(this.cartStore.data)
         },
         increment(id){
-            let filtered = this.carts.filter((cart) => cart.id == id)[0]
-            filtered.count += 1
-            this.countSumPrices(this.carts)
+            this.cartStore.increaseItemCount(id)
+            // this.countSumPrices(this.cartStore.data)
         },
         decrement(id){
-            let filtered = this.carts.filter((cart) => cart.id == id)[0]
-            if(filtered.count > 1){
-                filtered.count -= 1
-                this.countSumPrices(this.carts)
-            }
-        },
-        countSumPrices(data){
-            const prices = data.map((cart) => cart.price * cart.count)
-            this.sumPrices = prices.reduce((total, num) => total + num)
+            this.cartStore.decreaseItemCount(id)
         },
         goToProduct(id){
             document.location.href = this.baseUrl + 'product/' + id
         },
     },
-    async mounted() {
-        const res = await axios.get(url)
-        this.carts = res.data.products.map((cart) => cart = {'count': 2, ...cart})
-        this.countSumPrices(this.carts)
-    }
 }
 </script>
 
@@ -55,7 +43,7 @@ export default {
     <MainLayout v-if="carts !== undefined">
         <h1 class="text-center mb-8 text-3xl">Keranjang</h1>
 
-        <div class="px-[1em] sm:container" v-if="carts.length != 0">
+        <div class="px-[1em] sm:container" v-if="cartStore.data.carts.length != 0">
             <table :style="{
                 'width': '100%',
                 'border-collapse': 'collapse'
@@ -68,7 +56,7 @@ export default {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="cart in carts">
+                    <tr v-for="cart in cartStore.data.carts">
                         <td :style="{
                             'display': 'flex',
                             'align-items': 'center',
@@ -76,26 +64,27 @@ export default {
                         }">
                             <v-icon name="co-trash" fill="red" scale="2" :style="{
                                 'cursor': 'pointer'
-                            }" @click="removeFromCart(cart.id)"/>
+                            }" @click="removeFromCart(cart.itemId)"/>
                             <div :style="{
                                 'display': 'flex',
                                 'gap': '10px',
                                 'align-items': 'center'
                             }">
-                                <div :style="{
-                                    'border-radius': '5px',
-                                    'overflow': 'hidden'
-                                }" class="w-[50px] h-[75px] sm:w-[100px] sm:h-[125px]">
-                                    <img :src="cart.images[0]" :style="{
-                                        'width': '100%',
-                                        'height': '100%',
-                                        'cursor': 'pointer'
-                                    }" @click="goToProduct(cart.id)"
-                                    />
-                                </div>
+                                <RouterLink :to="baseUrl + 'product/' + cart.itemId">
+                                    <div :style="{
+                                        'border-radius': '5px',
+                                        'overflow': 'hidden'
+                                    }" class="w-[50px] h-[75px] sm:w-[100px] sm:h-[125px]">
+                                        <img :src="cart.itemImage" :style="{
+                                            'width': '100%',
+                                            'height': '100%',
+                                            'cursor': 'pointer'
+                                        }"/>
+                                    </div>
+                                </RouterLink>
                                 <div>
                                     <p>{{ cart.title }}</p>
-                                    <p>Rp. {{ (cart.price).toLocaleString('id-ID') }},-</p>
+                                    <p>Rp. {{ (cart.itemPrice).toLocaleString('id-ID') }},-</p>
                                 </div>
                             </div>
                         </td>
@@ -104,18 +93,18 @@ export default {
                                 'display': 'flex',
                                 'justify-content': 'center'
                             }">
-                                <button class="actionButton" @click="decrement(cart.id)">-</button>
+                                <button class="actionButton" @click="decrement(cart.itemId)">-</button>
 
-                                <input v-model="cart.count" :style="{
+                                <input v-model="cart.itemCount" :style="{
                                     'text-align': 'center'
                                 }" readonly class="w-[25px] sm:w-[50px]"/>
 
-                                <button class="actionButton" @click="increment(cart.id)">+</button>
+                                <button class="actionButton" @click="increment(cart.itemId)">+</button>
                             </div>
                         </td>
                         <td>
                             <div>
-                                <p>Rp. {{ (cart.price * cart.count).toLocaleString('id-ID') }},-</p>
+                                <p>Rp. {{ (cart.itemPrice * cart.itemCount).toLocaleString('id-ID') }},-</p>
                             </div>
                         </td>
                     </tr>
@@ -128,7 +117,7 @@ export default {
                             'font-weight': 'bold',
                             'font-size': '20px',
                             'padding': '10px 0'
-                        }">Rp. {{ sumPrices.toLocaleString('id-ID') }},-</td>
+                        }">Rp. {{ cartStore.sumPrices.toLocaleString('id-ID') }},-</td>
                     </tr>
                 </tbody>
             </table>

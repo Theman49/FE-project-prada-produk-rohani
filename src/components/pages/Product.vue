@@ -4,10 +4,13 @@ import MainLayout from '../../layouts/MainLayout.vue';
 import Loading from '../utilities/Loading.vue';
 import Back from '../utilities/Back.vue'
 import axios from 'axios';
+import { useCartStore } from '../../stores/Cart';
 
 export default{
     data(){
         return {
+            cartStore: useCartStore(),
+            isCart: false,
             baseUrl: import.meta.env.VITE_APP_STAGE == 'production' ? import.meta.env.VITE_APP_BASE_URL_PROD : import.meta.env.VITE_APP_BASE_URL,
             product: undefined,
             primaryImage: null,
@@ -35,12 +38,14 @@ export default{
         },
         addCart(){
             const item = {
-                'count': this.counter,
+                'itemCount': this.counter,
                 'itemId': this.product.id,
-                'itemTitle': this.product.title
+                'itemTitle': this.product.title,
+                'itemImage': this.product.images[0],
+                'itemPrice': this.product.price
             }
-            console.log(item)
-            document.location.href = this.baseUrl + 'cart'
+            this.cartStore.addCart(item)
+            this.isCart = this.cartStore.checkIsAdded(this.product.id)
         }
     },
     async mounted(){
@@ -48,6 +53,10 @@ export default{
         console.log(res.data)
         this.product = res.data
         this.primaryImage = this.product.images[0]
+        this.isCart = this.cartStore.checkIsAdded(this.product.id)
+        if(this.isCart){
+            this.counter = this.cartStore.data.filter((item) => item.itemId == this.product.id)[0].itemCount
+        }
     }
 }
 </script>
@@ -121,7 +130,7 @@ export default{
                     }" class="">
                         <div :style="{
                             'display': 'flex',
-                        }">
+                        }" class="w-1/2 sm:w-max">
                             <div>
                                 <button :style="{
                                     'height': '100%',
@@ -148,7 +157,7 @@ export default{
                             </div>
                         </div>
                         <div class="w-full sm:w-max">
-                            <button :style="{
+                            <button v-if="!isCart" :style="{
                                 'width': '100%',
                                 'display': 'flex',
                                 'align-items': 'center',
@@ -161,6 +170,22 @@ export default{
                                 'border': 'none',
                                 'justify-content': 'center'
                             }" @click="addCart()"><v-icon name="co-cart" scale="1.5" fill="white"/><span v-if="$matches.sm.min">Tambah ke Keranjang</span></button>
+                            <RouterLink v-else :to="baseUrl + 'cart'">
+                                <button :style="{
+                                    'width': '100%',
+                                    'display': 'flex',
+                                    'align-items': 'center',
+                                    'gap': '5px',
+                                    'height': '100%',
+                                    'padding': '10px 20px',
+                                    'cursor': 'pointer',
+                                    'background-color': 'rgb(7, 76, 122)',
+                                    'color': 'white',
+                                    'border': 'none',
+                                    'justify-content': 'center'
+                                }"
+                                >Lihat Keranjang</button>
+                            </RouterLink>
                         </div>
                     </div>
                 </div>

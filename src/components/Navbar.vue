@@ -70,10 +70,12 @@ export default {
             @mouseenter="showSubmenu(nav.id)" 
             @mouseleave="closeSubmenu(nav.id)"
         >
-            <a v-if="nav.text !== 'home'" :href=" baseUrl + 'catalog/' + nav.text"
-                >{{ nav.text }}</a>
-            <a v-else :href="baseUrl + nav.text"
-            >{{ nav.text }}</a>
+            <!-- <a v-if="nav.text !== 'home'" :href=" baseUrl + 'catalog/' + nav.text"
+                >{{ nav.text }}</a> -->
+            <RouterLink v-if="nav.text !== 'home' " :to="baseUrl + 'catalog/' + nav.text">{{ nav.text }}</RouterLink>
+            <RouterLink v-else :to="baseUrl + nav.text">{{ nav.text }}</RouterLink>
+            <!-- <a v-else :href="baseUrl + nav.text"
+            >{{ nav.text }}</a> -->
             <ul class="submenus" v-if="nav.submenus" :id="'submenu-'+nav.id">
                 <li v-for="submenu in nav.submenus">
                     <a :href="baseUrl + 'catalog/' + nav.text + '/' + submenu.text">{{ submenu.text }}</a>
