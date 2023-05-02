@@ -83,7 +83,7 @@ export default {
                                     </div>
                                 </RouterLink>
                                 <div>
-                                    <p>{{ cart.title }}</p>
+                                    <p>{{ cart.itemTitle }}</p>
                                     <p>Rp. {{ (cart.itemPrice).toLocaleString('id-ID') }},-</p>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@ export default {
                             'font-weight': 'bold',
                             'font-size': '20px',
                             'padding': '10px 0'
-                        }">Rp. {{ cartStore.sumPrices.toLocaleString('id-ID') }},-</td>
+                        }">Rp. {{ cartStore.data.sumPrices.toLocaleString('id-ID') }},-</td>
                     </tr>
                 </tbody>
             </table>
@@ -127,7 +127,9 @@ export default {
                 'display': 'flex',
                 'justify-content': 'flex-end'
             }">
-                <button id="checkout-button">Checkout</button>
+                <RouterLink :to="baseUrl + 'checkout'">
+                    <button id="checkout-button">Checkout</button>
+                </RouterLink>
             </div>
         </div>
 

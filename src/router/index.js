@@ -3,6 +3,7 @@ import Home from "../components/pages/Home.vue"
 import Product from "../components/pages/Product.vue"
 import Cart from "../components/pages/Cart.vue"
 import Checkout from "../components/pages/Checkout.vue"
+import Payment from "../components/pages/Payment.vue"
 import NotFound from "../components/utilities/NotFound.vue"
 
 const baseUrl = import.meta.env.VITE_APP_STAGE == 'production' ? import.meta.env.VITE_APP_BASE_URL_PROD : import.meta.env.VITE_APP_BASE_URL
@@ -32,6 +33,11 @@ const routes = [
         path: baseUrl + 'checkout',
         component: Checkout,
         name: "Checkout | Prada Produk Rohani"
+    },
+    {
+        path: baseUrl + 'payment',
+        component: Payment,
+        name: "Payment | Prada Produk Rohani"
     },
     {
         path: baseUrl + ":pathMatch(.*)*",
